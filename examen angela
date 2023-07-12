@@ -1,0 +1,105 @@
+import datetime
+
+pisos = 10
+depaxpiso = 4
+depadispo = [["A"] * depaxpiso for _ in range(pisos)]
+depas_vendidos = [[""] * depaxpiso for _ in range(pisos)]
+precios = {"A": 3800, "B": 3000, "C": 2800, "D": 3500}
+compradores = []
+venta_total= 0
+def main():
+    while True:
+      opc =mostrar_menu()
+
+      if opc == "1":
+          comprar_departamento()
+      elif opc == "2":
+          mostrar_departamentos_disponibles()
+      elif opc == "3":
+          mostrar_listado_compradores()
+      elif opc == "4":
+          mostrar_ventas_totales()
+      elif opc == "5":
+        print("SALIR")
+        break
+      else:
+        print("ERROR")
+main(3)
+def mostrar_menu():
+    print("OP1= Comprar departamento")
+    print("OP2= Mostrar departamentos disponibles")
+    print("OP3= Ver listado de compradores")
+    print("OP4= Mostrar ventas totales")
+    print("OP5= Salir")
+    opc = input("Seleccione una opción: ")
+
+def compra_departamento():
+    while True:
+        try:
+            piso = int(input("Ingrese el número de piso (1-10): "))
+            tipo_departamento = input("Ingrese el tipo de departamento (A, B, C, D): ").upper()
+
+
+            if piso < 1 or piso > pisos or tipo_departamento not in precios:
+                print("Error: Departamento inválido.")
+                continue
+
+            fila_departamento = piso - 1
+            columna_departamento = ord(tipo_departamento) - ord("A")
+
+
+            if depas_vendidos[fila_departamento][columna_departamento] != "":
+                print("Departamento no disponible.")
+                continue
+
+
+            while True:
+                try:
+                    run_comprador = int(input("Ingrese el RUN del comprador (sin guiones ni puntos): "))
+                    if run_comprador <= 0:
+                        print("Error: RUN inválido.")
+                        continue
+                    break
+                except ValueError:
+                    print("Error: RUN inválido. Ingrese solo números.")
+
+
+            depas_vendidos[fila_departamento][columna_departamento] = str(run_comprador)
+            compradores.append(run_comprador)
+
+
+            precio_departamento = precios[tipo_departamento]
+            global ventas_totales
+            ventas_totales += precio_departamento
+
+            print("Operación realizada correctamente.")
+            break
+        except ValueError:
+            print("Error: Ingrese valores numéricos para el piso.")
+        except IndexError:
+            print("Error: Departamento inválido.")
+
+
+def mostrar_departamentos_disponibles():
+    print("Estado de venta de departamentos:")
+    for i in range(pisos):
+        print(f"Piso {i+1}: ", end="")
+        for j in range(departamentos_por_piso):
+            departamento = departamentos_disponibles[i][j]
+            vendido = departamentos_vendidos[i][j]
+            if vendido == "":
+                print(departamento, end=" ")
+            else:
+                print("X", end=" ")
+        print()
+
+
+def mostrar_listado_compradores():
+    print("Listado de compradores por RUN:")
+    compradores_ordenados = sorted(compradores)
+    for comprador in compradores_ordenados:
+        print(comprador)
+
+
+def mostrar_ventas_totales():
+    print(f"Ventas totales: {venta_total} UF")
